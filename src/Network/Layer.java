@@ -1,17 +1,17 @@
 package Network;
 
 public class Layer {
-    protected float[] values;
+    protected double[] values;
 
     public Layer(int layerSize) {
-        values = new float[layerSize];
+        values = new double[layerSize];
     }
 
-    public float[] getValues() {
+    public double[] getValues() {
         return values;
     }
 
-    public void setValues(float[] values) {
+    public void setValues(double[] values) {
         this.values = values;
     }
 
@@ -21,15 +21,13 @@ public class Layer {
 
     public int getMaxP() {
         int curr = 0;
-        float maxP = 0;
+        double maxP = 0;
         for (int i = 0; i < values.length; i++) {
             if (values[i] > maxP) {
                 maxP = values[i];
                 curr = i;
             }
         }
-        //System.out.println("Confidence: " + maxP);
-        //System.out.println("Res: " + curr);
         return curr;
     }
 }
