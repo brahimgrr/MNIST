@@ -1,4 +1,5 @@
-package network;
+package com.example.mnist.network;
+
 
 import java.io.Serializable;
 

@@ -1,10 +1,9 @@
 package main;
 
 import data.Csv;
-import network.Network;
-
 import javax.sql.rowset.serial.SerialException;
-import javax.sql.rowset.serial.SerialJavaObject;
+import com.example.mnist.network.Network;
+
 import java.io.*;
 import java.util.Arrays;
 import java.util.List;
@@ -12,8 +11,8 @@ import java.util.Scanner;
 
 public class Main {
     private static final int INPUT_SIZE = 784;
-    private static final int NET_DEPTH = 1;
-    private static final int[] NODE_SIZES = {10};
+    private static final int NET_DEPTH = 2;
+    private static final int[] NODE_SIZES = {56,56};
     private static final int OUTPUT_SIZE = 10;
 
     public static void main(String[] args) throws SerialException {
@@ -36,7 +35,6 @@ public class Main {
 
         double[] Y_dev = Csv.getColumn(dataTrain, 0);
         double[][] X_dev = Csv.removeColumn(dataTrain, 0);
-
         network.testNetwork(X_dev, Y_dev, 0);
         for (int e = 0; e < 10; e++) {
             network.backpropagation(X_train, Y_train, 1);
@@ -72,7 +70,6 @@ public class Main {
         }
         if (newNetwork != null) {
             newNetwork.testNetwork(X_dev, Y_dev, 0);
-
         }
 
     }

@@ -1,4 +1,4 @@
-package network;
+package com.example.mnist.network;
 
 import java.io.Serializable;
 
@@ -21,25 +21,26 @@ public class Network implements Serializable {
             hiddenLayers[i-1].setNextLayer(hiddenLayers[i]);
         }
     }
-    public int evaluate(double[] data) {
+    public double[] evaluate(double[] data) {
+        double[] softMax;
+        int resPosition;
         initialLayer.setValues(data);
         finalLayer.calculateValues();
-        return getMaxP(softMax());
+        softMax = softMax();
+        resPosition = getMaxP(softMax);
+        return new double[]{resPosition, softMax[resPosition]};
     }
     private double[] softMax() {
-        double[] expSum = new double[finalLayer.getLayerSize()];
+        double[] sum = new double[finalLayer.getLayerSize()];
         double factor = 0;
-        double e = 0;
-        double max_value = finalLayer.getValues()[finalLayer.getMaxP()];
-        for (int i = 0; i < expSum.length; i++) {
-            e = finalLayer.getValues()[i] - max_value;
-            expSum[i] = Math.exp(e);
-            factor += expSum[i];
+        for (int i = 0; i < sum.length; i++) {
+            sum[i] = finalLayer.getValues()[i];
+            factor += finalLayer.getValues()[i];
         }
-        for (int i = 0; i < expSum.length; i++) {
-            expSum[i] = expSum[i] / factor;
+        for (int i = 0; i < sum.length; i++) {
+            sum[i] = sum[i] / factor;
         }
-        return expSum;
+        return sum;
     }
     public int getMaxP(double[] res) {
         int curr = 0;
@@ -76,7 +77,7 @@ public class Network implements Serializable {
         double error = 0;
         for (int i = 0; i < X_dev.length; i++) {
             exp[(int) Y_dev[i]] += 1;
-            res[evaluate(X_dev[i])] += 1;
+            res[(int) evaluate(X_dev[i])[0]] += 1;
         }
         for (int i = 0; i < res.length; i++) {
             error += Math.max(0, res[i] - exp[i]);

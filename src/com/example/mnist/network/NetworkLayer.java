@@ -1,4 +1,4 @@
-package network;
+package com.example.mnist.network;
 
 import java.util.Random;
 
@@ -8,7 +8,7 @@ public class NetworkLayer extends Layer {
     protected double[] errors;
     private final Layer prevLayer;
     private NetworkLayer nextLayer;
-    private double learningRate = 0.8;
+    private double learningRate = 0.4;
     private final boolean RELU = false;
 
     public NetworkLayer(int layerSize, Layer prevLayer) {
@@ -25,11 +25,11 @@ public class NetworkLayer extends Layer {
     private void initParams() {
         Random rand = new Random();
         for (int i = 0; i < biases.length; i++) {
-            biases[i] = rand.nextDouble(1) - 0.5;
+            biases[i] = rand.nextDouble() - 0.5;
         }
         for (int i = 0; i < weights.length; i++) {
             for (int j = 0; j < weights[i].length; j++) {
-                weights[i][j] = rand.nextDouble(1) - 0.5;
+                weights[i][j] = rand.nextDouble() - 0.5;
             }
         }
     }
