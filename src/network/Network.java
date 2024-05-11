@@ -1,6 +1,8 @@
-package Network;
+package network;
 
-public class Network {
+import java.io.Serializable;
+
+public class Network implements Serializable {
     private final Layer initialLayer;
     private final NetworkLayer[] hiddenLayers;
     private final NetworkLayer finalLayer;
@@ -24,7 +26,6 @@ public class Network {
         finalLayer.calculateValues();
         return getMaxP(softMax());
     }
-
     private double[] softMax() {
         double[] expSum = new double[finalLayer.getLayerSize()];
         double factor = 0;
@@ -63,19 +64,41 @@ public class Network {
                 }
                 for (int l = 0; l < hiddenLayers.length; l++) {
                     hiddenLayers[l].updateParams();
-                    hiddenLayers[l].decreaseLearningRate();
                 }
                 finalLayer.updateParams();
-                finalLayer.decreaseLearningRate();
-
             }
+        }
+        decreaseLearningRate();
+    }
+    public void testNetwork(double[][] X_dev, double[] Y_dev, int epoch) {
+        int[] res = new int[10];
+        int[] exp = new int[10];
+        double error = 0;
+        for (int i = 0; i < X_dev.length; i++) {
+            exp[(int) Y_dev[i]] += 1;
+            res[evaluate(X_dev[i])] += 1;
+        }
+        for (int i = 0; i < res.length; i++) {
+            error += Math.max(0, res[i] - exp[i]);
+        }
+        for (int i = 0; i <= 9; i++) {
+            System.out.printf("Case " + i + ": %5d - Exp: %5d\n", res[i], exp[i]);
+        }
+        System.out.printf("Done epoch: %4d\n", epoch);
+        System.out.printf("Network accuracy: %.2f %%\n", (Y_dev.length - error) * 100/ Y_dev.length);
+        System.out.println(" ");
+    }
+    private void decreaseLearningRate() {
+        finalLayer.decreaseLearningRate();
+        for (int l = 0; l < hiddenLayers.length; l++) {
+            hiddenLayers[l].decreaseLearningRate();
         }
     }
     private void reset() {
         initialLayer.values = new double[initialLayer.getLayerSize()];
         finalLayer.reset();
-        for (int i = 0; i < hiddenLayers.length; i++) {
-            hiddenLayers[i].reset();
+        for (NetworkLayer hiddenLayer : hiddenLayers) {
+            hiddenLayer.reset();
         }
     }
 }
