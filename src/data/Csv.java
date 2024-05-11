@@ -1,4 +1,4 @@
-package Network;
+package data;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
