@@ -67,8 +67,8 @@ public class Network implements Serializable {
                 }
                 finalLayer.updateParams();
             }
+            decreaseLearningRate();
         }
-        decreaseLearningRate();
     }
     public void testNetwork(double[][] X_dev, double[] Y_dev, int epoch) {
         int[] res = new int[10];
