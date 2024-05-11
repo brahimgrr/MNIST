@@ -1,6 +1,8 @@
-package Network;
+package network;
 
-public class Layer {
+import java.io.Serializable;
+
+public class Layer implements Serializable {
     protected double[] values;
 
     public Layer(int layerSize) {
@@ -12,7 +14,9 @@ public class Layer {
     }
 
     public void setValues(double[] values) {
-        this.values = values;
+        for (int i = 0; i < values.length; i++) {
+            this.values[i] = values[i] / 255;
+        };
     }
 
     public int getLayerSize() {
